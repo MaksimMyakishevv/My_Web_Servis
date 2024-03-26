@@ -1,11 +1,37 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { getPostgresConfig } from './config/postgres.config';
+import { PromoModule } from './promo/promo.module';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
+import { BasketModule } from './busket/busket.module';
 
 @Module({
-  imports: [ConfigModule.forRoot()],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getPostgresConfig,
+    }),
+    PromoModule,
+    CategoryModule,
+    ProductModule,
+    UsersModule,
+    AuthModule,
+    CartModule,
+    OrderModule,
+    BasketModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
