@@ -44,6 +44,10 @@ export class ProductService {
     return newProduct;
   }
 
+  async findAllproduct() {
+    return this.productRepository.find();
+  }
+
   async findAll(): Promise<ProductEntity[]> {
     return this.productRepository.find();
   }
