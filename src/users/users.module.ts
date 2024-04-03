@@ -6,9 +6,14 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UserEntity } from './entities/user.entity';
 import { BasketModule } from 'src/busket/busket.module';
+import { Role } from 'src/role/entities/role.entity';
 
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([UserEntity]), BasketModule],
+  imports: [
+    ConfigModule,
+    TypeOrmModule.forFeature([UserEntity, Role]),
+    BasketModule,
+  ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],

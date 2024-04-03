@@ -1,9 +1,12 @@
 import { Basket } from 'src/busket/entities/busket.entity';
 import { Order } from 'src/order/entities/order.entity';
+import { Role } from 'src/role/entities/role.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -30,4 +33,7 @@ export class UserEntity {
   basket: Basket;
   @OneToOne(() => Order, (order) => order.user)
   order: Order;
+  @ManyToOne(() => Role, (role) => role.user)
+  @JoinColumn()
+  role: Role;
 }

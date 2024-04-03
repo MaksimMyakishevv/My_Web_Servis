@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { BasketModule } from './busket/busket.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { BasketModule } from './busket/busket.module';
     CartModule,
     OrderModule,
     BasketModule,
+    RoleModule,
   ],
   controllers: [],
   providers: [],

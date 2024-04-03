@@ -3,11 +3,22 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { RoleService } from './role/role.service';
+import { UsersService } from './users/users.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
+
+  const roleService = app.get(RoleService);
+  const useradmin = app.get(UsersService);
+
+  const tableExists = await roleService.checkTableExists();
+  if (!tableExists) {
+    await roleService.createRoles();
+    await useradmin.createadmin();
+  }
 
   const config = new DocumentBuilder()
     .setTitle('School X - OpenAPI 3.0')
