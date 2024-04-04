@@ -22,12 +22,12 @@ export class UsersService {
     admin.password = '135798642';
     const role = await this.roleRepository.findOne({
       where: { id: 1 },
-      relations: ['user'],
+      relations: ['users'],
     });
 
     const user = await this.repository.save(admin); // Сохраняем пользователя
 
-    role.user.push(user);
+    role.users.push(user);
 
     await this.roleRepository.save(role);
   }
@@ -40,24 +40,21 @@ export class UsersService {
         `Пользователь ${dto.username} уже существует`,
       );
     }
-    const role = await this.roleRepository.findOne({
-      where: { id: 2 },
-      relations: ['user'],
-    });
-
-    const user = await this.repository.save(dto); // Сохраняем пользователя
-
-    role.user.push(user);
-
-    await this.roleRepository.save(role);
-
+    // Находим роль пользователя
+    const role = await this.roleRepository.findOne({ where: { id: 2 } });
+    // Создаем пользователя
+    const user = await this.repository.create(dto);
+    // Устанавливаем связь с ролью
+    user.role = role;
+    // Сохраняем пользователя
+    const savedUser = await this.repository.save(user);
     // Создаем корзину после регистрации
-    const basket = await this.basketService.create(user);
-    user.basket = basket;
+    const basket = await this.basketService.create(savedUser);
+    savedUser.basket = basket;
+    // Обновляем пользователя с корзиной
+    await this.repository.save(savedUser);
 
-    await this.repository.save(user); // Обновляем пользователя с корзиной
-
-    return user;
+    return savedUser;
   }
 
   async findByUsername(username: string) {

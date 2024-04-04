@@ -12,6 +12,8 @@ import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { BasketModule } from './busket/busket.module';
 import { RoleModule } from './role/role.module';
+import { RolesGuard } from './auth/guards/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -34,6 +36,11 @@ import { RoleModule } from './role/role.module';
     RoleModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

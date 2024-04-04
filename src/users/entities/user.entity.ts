@@ -33,7 +33,7 @@ export class UserEntity {
   basket: Basket;
   @OneToOne(() => Order, (order) => order.user)
   order: Order;
-  @ManyToOne(() => Role, (role) => role.user)
+  @ManyToOne(() => Role, (role) => role.users, { eager: true })
   @JoinColumn()
   role: Role;
 }

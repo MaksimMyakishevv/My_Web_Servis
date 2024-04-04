@@ -35,6 +35,9 @@ export class RoleService {
     const Newrole = await this.roleRepository.save(role);
     return Newrole;
   }
+  async findRoleById(id: number): Promise<Role | null> {
+    return await this.roleRepository.findOneBy({ id });
+  }
 
   findAll() {
     return this.roleRepository.find();

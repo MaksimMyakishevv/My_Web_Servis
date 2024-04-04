@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-
 import { UserEntity } from '../users/entities/user.entity';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
@@ -38,9 +37,11 @@ export class AuthService {
 
     try {
       const userData = await this.usersService.create(dto);
-
       return {
-        token: this.jwtService.sign({ id: userData.id }),
+        token: this.jwtService.sign({
+          id: userData.id,
+          role: userData.role.name,
+        }),
       };
     } catch (err) {
       // throw new ForbiddenException('Ошибка при регистрации');
@@ -50,7 +51,7 @@ export class AuthService {
 
   async login(user: UserEntity) {
     return {
-      token: this.jwtService.sign({ id: user.id }),
+      token: this.jwtService.sign({ id: user.id, role: user.role.name }),
     };
   }
 }

@@ -14,8 +14,9 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/auth/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-
 @ApiTags('category')
 @Controller('category')
 export class CategoryController {
@@ -23,8 +24,8 @@ export class CategoryController {
 
   @Post()
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   create(@Body() dto: CreateCategoryDto) {
     return this.categoryService.create(dto);
   }
@@ -41,7 +42,8 @@ export class CategoryController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
   update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -51,7 +53,8 @@ export class CategoryController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
   }
