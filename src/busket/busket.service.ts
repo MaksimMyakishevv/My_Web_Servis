@@ -137,17 +137,17 @@ export class BasketService {
     if (!product) {
       throw new Error('Продукт не найден');
     }
-    console.log(userBasket);
+    console.log(userBasket.BasketItems);
+    console.log(dto.productId);
 
     const basketItem = await this.basketItemRepository.findOne({
       relations: ['basket', 'product'],
       where: {
         basket: userBasket,
-        product: product,
+        product: { id: dto.productId },
       },
     });
     console.log(basketItem);
-    console.log(userBasket.BasketItems);
     if (!basketItem) {
       console.log('Элемент корзины не найден');
     } else {

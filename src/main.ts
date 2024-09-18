@@ -8,6 +8,7 @@ import { UsersService } from './users/users.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({ origin: '*', methods: 'GET,HEAD,PUT,POST,DELETE' });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 

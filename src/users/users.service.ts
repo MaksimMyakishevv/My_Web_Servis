@@ -36,9 +36,7 @@ export class UsersService {
     const existingUser = await this.findByUsername(dto.username);
 
     if (existingUser) {
-      throw new BadRequestException(
-        `Пользователь ${dto.username} уже существует`,
-      );
+      throw new BadRequestException(`User ${dto.username} already exists`);
     }
     // Находим роль пользователя
     const role = await this.roleRepository.findOne({ where: { id: 2 } });
